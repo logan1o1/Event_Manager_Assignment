@@ -9,6 +9,10 @@ const eventSchema =new mongoose.Schema({
         type: String,
         required: true,
     },
+    poster: {
+        type: String,
+        default: "https://www.templatemonster.com/corporate-identity/multipurpose-event-management-poster-corporate-identity-template-corporate-identity-template-172847.html"
+    },
     date: {
         type: Date,
         required: true,
@@ -28,7 +32,7 @@ const eventSchema =new mongoose.Schema({
         enum: ["Tech", "Music", "Education", "Sports", "Business"],
     },
     attendees: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: [mongoose.Schema.Types.ObjectId],
         ref: "User",
         default: [],
     },
