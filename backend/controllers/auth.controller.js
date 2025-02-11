@@ -1,7 +1,7 @@
 import { errorHandler } from "../middlewares/error.js"
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js"
-import generateAndSetTokens from "../middlewares/generatetoken.js";
+import generateAndSetTokens from "../middlewares/generateToken.js";
 
 
 
