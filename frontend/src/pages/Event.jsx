@@ -69,7 +69,6 @@ const Event = () => {
       }
       await getEventById();
       if (socket) {
-        // Emit updated attendee count (you may choose to use data.event.attendees.length instead)
         const updatedCount = event?.attendees?.length + 1 || 1;
         socket.emit("updateAttendeeCount", { eventId: id, count: updatedCount });
       }
@@ -148,7 +147,6 @@ const Event = () => {
         &larr; Back to Dashboard
       </button>
       <div className="flex flex-col md:flex-row gap-4">
-        {/* Left Column: Event Details */}
         <div className="flex-1">
           <h2 className="text-3xl font-bold mb-4">{event.title}</h2>
           <p className="text-gray-700 mb-4">{event.description}</p>
@@ -198,7 +196,6 @@ const Event = () => {
             )}
           </div>
         </div>
-        {/* Right Column: Poster Image */}
         <div className="flex-1">
           <img
             src={event.poster}

@@ -4,14 +4,14 @@ import { useAuthContext } from "../context/authContext";
 
 const Navbar = () => {
   const [currentPage, setCurrentPage] = useState("home");
-  const { authUser } = useAuthContext();
+  const { authUser, setAuthUser } = useAuthContext();
 
   const handleLogout = async () => {
     try {
       const response = await fetch("/api/auth/logout");
       const data = await response.json();
       if (data.success) {
-        location.reload()
+        setAuthUser(null)
         navigate("/");
         alert("Logout successful: " + data.message);
       } else {

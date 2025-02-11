@@ -37,7 +37,6 @@ export const AuthContextProvider = ({ children }) => {
 
 
   useEffect(() => {
-    // Ensure we're on the client
     if (typeof window !== "undefined") {
       const token = getCookie("access_token");
       if (token) {

@@ -21,7 +21,6 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/eventcreation" element={<EventCreations />} />
           <Route path="/update-event/:id" element={<UpdateEvent />} />
-          {/* <Route path="/profile" element={<Profile />} /> */}
           <Route path='/event/:id' element={<Event />} />
         </Routes>
       </EventProvider>

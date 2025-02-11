@@ -22,7 +22,6 @@ export const useSocket = (eventId) => {
       }
     });
 
-    // Cleanup the connection when the component unmounts
     return () => {
       if (socket) {
         socket.disconnect();
