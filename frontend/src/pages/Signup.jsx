@@ -38,6 +38,7 @@ const Signup = () => {
       setLoading(false);
       setError(null);
       navigate("/dashboard");
+      window.location.reload();
     } catch (error) {
       setLoading(false);
       setError(error.message);
