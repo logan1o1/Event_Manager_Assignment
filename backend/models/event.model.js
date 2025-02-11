@@ -11,7 +11,7 @@ const eventSchema =new mongoose.Schema({
     },
     poster: {
         type: String,
-        default: "https://www.templatemonster.com/corporate-identity/multipurpose-event-management-poster-corporate-identity-template-corporate-identity-template-172847.html"
+        default: "https://s.tmimgcdn.com/scr/800x500/172800/multipurpose-event-management-poster-corporate-identity-template_172847-original.jpg"
     },
     date: {
         type: Date,

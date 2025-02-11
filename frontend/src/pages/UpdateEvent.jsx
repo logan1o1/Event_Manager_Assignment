@@ -1,14 +1,36 @@
-import React, { useState } from "react";
-import { useAuthContext } from "../context/authContext";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams  } from "react-router-dom";
 import { useEventContext } from "../context/eventContext";
 
-const EventCreations = () => {
-  const [formData, setFormData] = useState({});
-  const { triggerEventsChange } = useEventContext();
+const UpdateEvent = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { selectedEvent, triggerEventsChange } = useEventContext();
+  const event = selectedEvent;
+
+  const [formData, setFormData] = useState({
+    title: event?.title || "",
+    description: event?.description || "",
+    date: event?.date || "",
+    time: event?.time || "",
+    location: event?.location || "",
+    category: event?.category || "",
+  });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [imgUrl, setImgUrl] = useState("")
-  const { authUser } = useAuthContext();
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setFormData({
+      title: event?.title || "",
+      description: event?.description || "",
+      date: event?.date || "",
+      time: event?.time || "",
+      location: event?.location || "",
+      category: event?.category || "",
+    });
+  }, [selectedEvent]);
 
   const handleChange = (e) => {
     setFormData({
@@ -36,15 +58,15 @@ const EventCreations = () => {
     setImgUrl(uploadImgUrl.url)
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const result = await fetch("/api/events/create", {
+      const result = await fetch(`/api/events/update/${id}`, {
         method: "POST",
         body: JSON.stringify({
           ...formData,
-          organizerId: authUser.userId,
           poster: imgUrl
         }),
         headers: {
@@ -57,10 +79,10 @@ const EventCreations = () => {
         setError(data.message);
         return;
       }
-      triggerEventsChange();
-      setFormData({})
+      triggerEventsChange()
       setLoading(false);
       setError(null);
+      navigate("/dashboard");
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -69,7 +91,7 @@ const EventCreations = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Create an Event</h2>
+      <h2 className="text-2xl font-bold mb-4">Update Event</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="title" className="block mb-1">
@@ -79,6 +101,7 @@ const EventCreations = () => {
             onChange={handleChange}
             type="text"
             id="title"
+            value={formData.title}
             className="w-full p-2 border rounded"
             required
           />
@@ -90,6 +113,7 @@ const EventCreations = () => {
           <textarea
             onChange={handleChange}
             id="description"
+            value={formData.description}
             className="w-full p-2 border rounded"
             required
           ></textarea>
@@ -102,6 +126,7 @@ const EventCreations = () => {
             onChange={handleChange}
             type="date"
             id="date"
+            value={formData.date}
             className="w-full p-2 border rounded"
             required
           />
@@ -114,6 +139,7 @@ const EventCreations = () => {
             onChange={handleChange}
             type="time"
             id="time"
+            value={formData.time}
             className="w-full p-2 border rounded"
             required
           />
@@ -126,6 +152,7 @@ const EventCreations = () => {
             onChange={handleChange}
             type="text"
             id="location"
+            value={formData.location}
             className="w-full p-2 border rounded"
             required
           />
@@ -137,6 +164,7 @@ const EventCreations = () => {
           <select
             onChange={handleChange}
             id="category"
+            value={formData.category}
             className="w-full p-2 border rounded"
             required
           >
@@ -157,7 +185,6 @@ const EventCreations = () => {
             type="file"
             id="poster"
             className="w-full p-2 border rounded"
-            accept="image/*"
           />
           {loading ? "Uploading..." : ""}
         </div>
@@ -165,19 +192,12 @@ const EventCreations = () => {
           type="submit"
           className="w-full bg-blue-600 text-white p-2 rounded"
         >
-          {loading ? "loading..." : "Create Event"}
+          {loading ? "Updating..." : "Update Event"}
         </button>
       </form>
       {error && <p className="text-red-600">{error}</p>}
-      {error == null ? (
-        <></>
-      ) : (
-        !error && (
-          <p className="text-green-600">{"Event successfully created"}</p>
-        )
-      )}
     </div>
   );
 };
 
-export default EventCreations;
+export default UpdateEvent;

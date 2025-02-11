@@ -13,7 +13,8 @@ const PORT = process.env.PORT || 8000
 
 const app = express();
 const server = http.createServer(app);
-setupSocket(server)
+const io = setupSocket(server)
+app.set('io', io);
 
 app.use(express.json());
 app.use(cookieParser());

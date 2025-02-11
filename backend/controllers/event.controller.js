@@ -17,7 +17,7 @@ export const getEvents = async (req, resp, next) => {
         const sort = req.query.sort || "createdAt";
         const order = req.query.order || "desc";
 
-        const events = await Event.find().sort({[sort]: order})
+        const events = await Event.find().sort({ [sort]: order })
         if (!events) next(errorHandler(400, "Error getting events"));
         resp.status(200).json(events);
     } catch (error) {
@@ -41,7 +41,7 @@ export const updateEvent = async (req, resp, next) => {
     if (req.user.userId != event.organizerId) next(errorHandler(403, "You do not have permission to perform this action"));
 
     try {
-        const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedEvent) next(errorHandler(401, "Error while updating event"));
         resp.status(200).json(updatedEvent);
     } catch (error) {
@@ -61,3 +61,24 @@ export const deleteEvent = async (req, resp, next) => {
         next(error)
     }
 }
+
+export const attendEvent = async (req, resp, next) => {
+    try {
+        const updatedEvent = await Event.findByIdAndUpdate(
+            req.params.id,
+            { $addToSet: { attendees: req.user.userId } },
+            { new: true }
+        );
+        if (!updatedEvent) {
+            return next(errorHandler(400, "Event not found"));
+        }
+        const io = req.app.get('io');
+        io.to(req.params.id).emit("attendeeCountUpdate", {
+            eventId: req.params.id,
+            count: updatedEvent.attendees.length,
+        });
+        resp.status(200).json({ success: true, event: updatedEvent });
+    } catch (error) {
+        next(error);
+    }
+};

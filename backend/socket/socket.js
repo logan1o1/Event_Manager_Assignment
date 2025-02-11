@@ -18,11 +18,11 @@ const setupSocket = (server) => {
     });
 
     // Listen for attendee count updates after attendee is added
-    socket.on('updateAttendeeCount', ({ eventId, count }) => {
-      // Broadcast the updated count
-      io.to(eventId).emit('attendeeCountUpdate', { eventId, count });
-      console.log(`Updated attendee count for event ${eventId}: ${count}`);
-    });
+    // socket.on('updateAttendeeCount', ({ eventId, count }) => {
+    //   // Broadcast the updated count
+    //   io.to(eventId).emit('attendeeCountUpdate', { eventId, count });
+    //   console.log(`Updated attendee count for event ${eventId}: ${count}`);
+    // });
 
     socket.on('disconnect', () => {
       console.log(`Client disconnected: ${socket.id}`);
