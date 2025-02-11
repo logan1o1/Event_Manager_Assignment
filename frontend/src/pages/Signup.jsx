@@ -37,7 +37,7 @@ const Signup = () => {
       setUserInfo(data)
       setLoading(false);
       setError(null);
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       setLoading(false);
       setError(error.message);
