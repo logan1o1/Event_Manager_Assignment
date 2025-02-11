@@ -6,7 +6,9 @@ import connectToDb from "./db/connectToDb.js";
 import authRouter from "./routes/auth.route.js";
 import setupSocket from './socket/socket.js';
 import eventRouter from './routes/event.route.js';
+import path from 'path';
 
+const __dirname = path.resolve();
 
 dotenv.config();
 const PORT = process.env.PORT || 8000
@@ -31,6 +33,12 @@ app.use((err, req, resp, next) => {
         message
     })
 })
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
 server.listen(PORT, () => {
     connectToDb();
